@@ -15,6 +15,7 @@ connection.connect(function (err) {
     startApp()
 })
 
+// Runs the App and prompts the user with choices to choose from
 function startApp() {
     inquirer.prompt({
         name: "mainmenu",
@@ -23,10 +24,13 @@ function startApp() {
         choices: [
             "Show All Employees",
             "Add Employee Info",
+            "Remove Employee",
             "Show Roles",
             "Add Role",
+            "Remove Role",
             "Show Departments",
             "Add Department",
+            "Remove Department",
             "Exit"
         ]
     }).then(responses => {
@@ -39,18 +43,27 @@ function startApp() {
             case "Add Employee Info":
                 addEmployee();
                 break;
+            case "Remove Employee":
+                removeEmployee();
+                break;
             case "Show Roles":
                 showRoles();
                 break;
             case "Add Role":
                 addRole();
                 break;
+            // case "Remove Role":
+            //     Role();
+            //     break;
             case "Show Departments":
                 showDepartments();
                 break;
             case "Add Department":
                 addDepartment();
                 break;
+            // case "Remove Department":
+            //     removeDepartment();
+            //     break;
             case "Exit":
                 connection.end();
                 break;
@@ -58,9 +71,11 @@ function startApp() {
     });
 }
 
+// This displays all employees in the terminal
 function showEmployees() {
-    // select from the db
-    let query = "SELECT * FROM employee";
+
+    // select from the database
+    let query = "SELECT employee.id, employee.first_name, employee.last_name, role.title, department.name AS department, role.salary FROM employee LEFT JOIN role ON employee.role_id = role.id LEFT JOIN department on role.department_id = department.id;";
     connection.query(query, function (err, res) {
         if (err) throw err;
         console.table(res);
@@ -68,6 +83,7 @@ function showEmployees() {
     });
 }
 
+// Prompts user to add a new employee
 function addEmployee() {
     inquirer
         .prompt([
@@ -101,8 +117,27 @@ function addEmployee() {
         });
 }
 
+// Deletes employee from the database
+function removeEmployee() {
+    inquirer.prompt({
+
+        type: "input",
+        message: "Enter ID of employee to termanate?",
+        name: "id"
+
+    }).then(answer => {
+        connection.query("DELETE FROM employee WHERE id = (?)", [answer.id], function (err, res) {
+            if (err) throw err;
+            console.table(res)
+            startApp()
+        })
+    })
+}
+
+// This displays all roles in the terminal
 function showRoles() {
-    // select from the db
+
+    // select from the database
     let query = "SELECT * FROM role";
     connection.query(query, function (err, res) {
         if (err) throw err;
@@ -111,6 +146,7 @@ function showRoles() {
     });
 }
 
+// Prompts user to add a new role
 function addRole() {
     inquirer
         .prompt([
@@ -139,8 +175,10 @@ function addRole() {
         });
 }
 
+// This displays all departments in the terminal
 function showDepartments() {
-    // select from the db
+
+    // select from the database
     let query = "SELECT * FROM department";
     connection.query(query, function (err, res) {
         if (err) throw err;
@@ -149,6 +187,7 @@ function showDepartments() {
     });
 }
 
+// Prompts user to add a new department
 function addDepartment() {
     inquirer.prompt({
 
