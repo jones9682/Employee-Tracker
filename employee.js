@@ -30,6 +30,8 @@ function startApp() {
             "Exit"
         ]
     }).then(responses => {
+        console.log("You selected: ", responses.mainmenu);
+
         switch (responses.mainmenu) {
             case "Show All Employees":
                 showEmployees();
@@ -91,8 +93,6 @@ function addEmployee() {
             }
         ])
         .then(answer => {
-
-
             connection.query("INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?)", [answer.firstName, answer.lastName, answer.roleId, answer.managerId], function (err, res) {
                 if (err) throw err;
                 console.table(res);
@@ -131,12 +131,36 @@ function addRole() {
             }
         ])
         .then(answer => {
-
-
             connection.query("INSERT INTO role (title, salary, department_id) VALUES (?, ?, ?)", [answer.roleName, answer.salaryTotal, answer.deptId], function (err, res) {
                 if (err) throw err;
                 console.table(res);
                 startApp();
             });
         });
+}
+
+function showDepartments() {
+    // select from the db
+    let query = "SELECT * FROM department";
+    connection.query(query, function (err, res) {
+        if (err) throw err;
+        console.table(res);
+        startApp();
+    });
+}
+
+function addDepartment() {
+    inquirer.prompt({
+
+        type: "input",
+        message: "What is the name of the department?",
+        name: "deptName"
+
+    }).then(answer => {
+        connection.query("INSERT INTO department (name) VALUES (?)", [answer.deptName], function (err, res) {
+            if (err) throw err;
+            console.table(res)
+            startApp()
+        })
+    })
 }
