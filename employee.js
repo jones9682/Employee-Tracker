@@ -24,9 +24,9 @@ function startApp() {
             "Show All Employees",
             "Add Employee Info",
             "Show Roles",
-            "Edit Role",
+            "Add Role",
             "Show Departments",
-            "Edit Department",
+            "Add Department",
             "Exit"
         ]
     }).then(responses => {
@@ -40,14 +40,14 @@ function startApp() {
             case "Show Roles":
                 showRoles();
                 break;
-            case "Edit Role":
-                editRole();
+            case "Add Role":
+                addRole();
                 break;
             case "Show Departments":
                 showDepartments();
                 break;
-            case "Edit Department":
-                editDepartment();
+            case "Add Department":
+                addDepartment();
                 break;
             case "Exit":
                 connection.end();
@@ -111,7 +111,7 @@ function showRoles() {
     });
 }
 
-function editRole() {
+function addRole() {
     inquirer
         .prompt([
             {
