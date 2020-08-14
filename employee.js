@@ -21,33 +21,33 @@ function startApp() {
         type: "list",
         message: "What would you like to do?",
         choices: [
-            "View All Employees",
+            "Show All Employees",
             "Add Employee Info",
-            "View Roles",
-            "Edit Roles",
-            "View Departments",
-            "Edit Departments",
+            "Show Roles",
+            "Edit Role",
+            "Show Departments",
+            "Edit Department",
             "Exit"
         ]
     }).then(responses => {
         switch (responses.mainmenu) {
-            case "View All Employees":
+            case "Show All Employees":
                 showEmployees();
                 break;
             case "Add Employee Info":
                 addEmployee();
                 break;
-            case "View Roles":
-                showRole();
+            case "Show Roles":
+                showRoles();
                 break;
-            case "Edit Roles":
-                editRoles();
+            case "Edit Role":
+                editRole();
                 break;
-            case "View Departments":
+            case "Show Departments":
                 showDepartments();
                 break;
-            case "Edit Departments":
-                editDepartments();
+            case "Edit Department":
+                editDepartment();
                 break;
             case "Exit":
                 connection.end();
@@ -90,10 +90,50 @@ function addEmployee() {
                 name: "managerId"
             }
         ])
-        .then(function (answer) {
+        .then(answer => {
 
 
             connection.query("INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?)", [answer.firstName, answer.lastName, answer.roleId, answer.managerId], function (err, res) {
+                if (err) throw err;
+                console.table(res);
+                startApp();
+            });
+        });
+}
+
+function showRoles() {
+    // select from the db
+    let query = "SELECT * FROM role";
+    connection.query(query, function (err, res) {
+        if (err) throw err;
+        console.table(res);
+        startApp();
+    });
+}
+
+function editRole() {
+    inquirer
+        .prompt([
+            {
+                type: "input",
+                message: "What's the name of the role?",
+                name: "roleName"
+            },
+            {
+                type: "input",
+                message: "What is the salary for this role?",
+                name: "salaryTotal"
+            },
+            {
+                type: "input",
+                message: "What is the department id number?",
+                name: "deptId"
+            }
+        ])
+        .then(answer => {
+
+
+            connection.query("INSERT INTO role (title, salary, department_id) VALUES (?, ?, ?)", [answer.roleName, answer.salaryTotal, answer.deptId], function (err, res) {
                 if (err) throw err;
                 console.table(res);
                 startApp();
