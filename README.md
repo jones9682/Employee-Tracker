@@ -28,7 +28,7 @@ So that I can organize and plan my business
 
 ## License
 
-[![License](https://github.com/jones9682/Employee-Tracker/blob/master/LICENSE)](./LICENSE)
+[![License](http://img.shields.io/:license-MIT-blue.svg)](./LICENSE)
 
 ## Contributors
 ``
