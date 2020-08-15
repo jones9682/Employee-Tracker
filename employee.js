@@ -52,18 +52,18 @@ function startApp() {
             case "Add Role":
                 addRole();
                 break;
-            // case "Remove Role":
-            //     Role();
-            //     break;
+            case "Remove Role":
+                removeRole();
+                break;
             case "Show Departments":
                 showDepartments();
                 break;
             case "Add Department":
                 addDepartment();
                 break;
-            // case "Remove Department":
-            //     removeDepartment();
-            //     break;
+            case "Remove Department":
+                removeDepartment();
+                break;
             case "Exit":
                 connection.end();
                 break;
@@ -175,6 +175,23 @@ function addRole() {
         });
 }
 
+// Deletes role from the database
+function removeRole() {
+    inquirer.prompt({
+
+        type: "input",
+        message: "Enter a role title to remove from database?",
+        name: "title"
+
+    }).then(answer => {
+        connection.query("DELETE FROM role WHERE title = (?)", [answer.title], function (err, res) {
+            if (err) throw err;
+            console.table(res)
+            startApp()
+        })
+    })
+}
+
 // This displays all departments in the terminal
 function showDepartments() {
 
@@ -197,6 +214,23 @@ function addDepartment() {
 
     }).then(answer => {
         connection.query("INSERT INTO department (name) VALUES (?)", [answer.deptName], function (err, res) {
+            if (err) throw err;
+            console.table(res)
+            startApp()
+        })
+    })
+}
+
+// Deletes department from the database
+function removeDepartment() {
+    inquirer.prompt({
+
+        type: "input",
+        message: "Enter a department to remove from database?",
+        name: "deptName"
+
+    }).then(answer => {
+        connection.query("DELETE FROM department WHERE (name) = (?)", [answer.deptName], function (err, res) {
             if (err) throw err;
             console.table(res)
             startApp()
