@@ -24,7 +24,9 @@ So that I can organize and plan my business
 
 ## Demo
 
-![Demo](https://)
+[![Demo Video Link](https://drive.google.com/file/d/1km13iDPYDO2SQn9Fm6VHp9glLS942fs_/view)]
+
+![Demo](./Demo/Employee-Tracker-CLI.gif)
 
 ## License
 
